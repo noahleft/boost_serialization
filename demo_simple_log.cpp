@@ -12,6 +12,19 @@
 
 #include "demo_gps.hpp"
 #include "simple_log_archive.hpp"
+#include <sstream>
+#include <openssl/md5.h>
+
+unsigned char result[MD5_DIGEST_LENGTH];
+
+// Print the MD5 sum as hex-digits.
+void print_md5_sum(unsigned char* md) {
+    int i;
+    for(i=0; i <MD5_DIGEST_LENGTH; i++) {
+            printf("%02x",md[i]);
+    }
+    printf("\n");
+}
 
 int main(int argc, char *argv[])
 {
@@ -64,8 +77,19 @@ int main(int argc, char *argv[])
     schedule.append("alice", 11, 47, &route1);
 
     // display the complete schedule
-    simple_log_archive log(std::cout);
-    log << schedule;
+    // simple_log_archive log(std::cout);
+    // log << schedule;
+
+    {
+        std::stringstream ss;
+        simple_log_archive slog(ss);
+        slog << schedule;
+        unsigned char md5[33];
+        const unsigned char * buf = (unsigned char*) ss.str().c_str();
+        unsigned len = ss.str().size();
+        MD5(buf, len, result);
+        print_md5_sum(result);
+    }
 
     delete bs0;
     delete bs1;
