@@ -84,7 +84,6 @@ int main(int argc, char *argv[])
         std::stringstream ss;
         simple_log_archive slog(ss);
         slog << schedule;
-        unsigned char md5[33];
         const unsigned char * buf = (unsigned char*) ss.str().c_str();
         unsigned len = ss.str().size();
         MD5(buf, len, result);
