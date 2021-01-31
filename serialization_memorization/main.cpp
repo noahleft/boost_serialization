@@ -15,8 +15,20 @@
 typedef struct bus_stop_list {
     bus_stop_list *next;
     bus_stop *data;
-    int id;
+
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version)
+    {
+        ar & next;
+        ar & data;
+    }
 } bus_stop_list_t;
+
+std::ostream & operator<<(std::ostream &os, const bus_stop_list_t &bs) {
+    if(bs.next) { os << *(bs.next); }
+    os << *(bs.data) << " ";
+    return os << "\n";
+}
 
 int main(int argc, char *argv[])
 {
@@ -65,11 +77,10 @@ int main(int argc, char *argv[])
     bsptr->data = bs3;
     bsptr->next = head;
     head = bsptr;
+    // .... consider if we have millions of elements
+    // the call stack would overflow during serializing it
 
-    for(bsptr=head; bsptr; bsptr=bsptr->next)
-    {
-        std::cout<<bsptr->data<<std::endl;
-    }
+    std::cout<<*head<<std::endl;
 
     delete bs0;
     delete bs1;
