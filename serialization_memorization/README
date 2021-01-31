@@ -1,0 +1,5 @@
+
+Considering serializing a linked list structure rather than array structure.
+
+The serialization process would recursively resolve the data which would cause call stack overflow.
+
