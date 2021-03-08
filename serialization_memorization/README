@@ -3,3 +3,17 @@ Considering serializing a linked list structure rather than array structure.
 
 The serialization process would recursively resolve the data which would cause call stack overflow.
 
+The solution is to flatten the callstack by iteratively serializing.
+
+i.e.
+The data object is 
+datalist := A -> B -> C -> ... -> Z
+
+Solution1.
+Recode the data to array.
+datalist[] := ABC...Z
+
+Solution2.
+Use a array to store the element in reverse order of linked list. Then serialize it.
+presave_array[] := Z...CBA
+datalist := A -> B -> C -> ... -> Z
